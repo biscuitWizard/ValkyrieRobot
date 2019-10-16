@@ -18,7 +18,7 @@ def main():
     print("Loading Modules...")
     radio = RadioReader()
     mc = MotorController(config)
-    controller = Controller(config["DEFAULT"], radio, mc)
+    controller = Controller(config, radio, mc)
 
     # Apply configuration to relevant modules.
     framerateMs = (1 / config["DEFAULT"].getint("Framerate", 30)) * 1000

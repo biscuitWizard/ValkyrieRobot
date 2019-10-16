@@ -8,7 +8,6 @@ class Controller(object):
         self.config = config
         self.radio = radio
         self.mcu = mcu
-        self.total_channels = 0
         self.channel_assignments = {}
 
     def get_channel_value(self, channel):
@@ -16,9 +15,12 @@ class Controller(object):
         return self.radio.channels[channel_number]
 
     def start(self):
-        self.total_channels = self.config.getint("Channels", 8)
         # Parse all the channel assignments in config to assign numbers to channels
         # to give the radio context.
+        i = 1
+        while i <= 8:
+            channel_value = self.config["CHANNELS"].get("CHANNEL_" + str(i))
+            self.channel_assignments[Channel[channel_value]] = i
 
     def loop(self):
         # Calculate what duty load to give the chassis ESCs.

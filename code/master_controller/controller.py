@@ -15,7 +15,7 @@ class Controller(object):
         if channel_number in self.radio.channels.keys():
             return self.radio.channels[channel_number]
         return 0
-    
+
     def start(self):
         # Parse all the channel assignments in config to assign numbers to channels
         # to give the radio context.
@@ -31,9 +31,9 @@ class Controller(object):
         lateral_throttle = self.get_channel_value(Channel.CHASSIS_LATERAL)      # -100 to 100 range
         yaw_throttle = self.get_channel_value(Channel.CHASSIS_YAW)              # -100 to 100 range
 
-        thrust = steering(lateral_throttle, yaw_throttle) * throttle_modifier
-        self.mcu.set_motor_value(Output.DRIVE_LEFT, thrust[0])
-        self.mcu.set_motor_value(Output.DRIVE_RIGHT, thrust[1])
+        thrust = steering(lateral_throttle, yaw_throttle)
+        self.mcu.set_motor_value(Output.DRIVE_LEFT, thrust[0] * throttle_modifier)
+        self.mcu.set_motor_value(Output.DRIVE_RIGHT, thrust[1] * throttle_modifier)
 
 
 def steering(x, y):

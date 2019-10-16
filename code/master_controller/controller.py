@@ -21,6 +21,7 @@ class Controller(object):
         while i <= 8:
             channel_value = self.config["CHANNELS"].get("CHANNEL_" + str(i))
             self.channel_assignments[Channel[channel_value]] = i
+            i += 1
 
     def loop(self):
         # Calculate what duty load to give the chassis ESCs.

@@ -1,5 +1,6 @@
 from enums import Output, OutputType
-
+from adafruit_servokit import ServoKit
+import time
 
 class MotorMapping:
     def __init__(self, pin, output, output_type):
@@ -18,11 +19,37 @@ class MotorMapping:
         else:
             print("Incorrect output type selected for motor")
 
+    def calibrate(self):
+        if self.output_type == OutputType.CONTINUOUS_MOTOR:
+            self.kit.continuous_servo[self.pin].set_pulse_width_range(700, 2000)
+            print("Calibrating ESC for %s..." % self.output)
+            self.kit.continuous_servo[self.pin].throttle = 0
+            time.sleep(2.5)
+            self.kit.continuous_servo[self.pin].throttle = 1
+            time.sleep(2.5)
+            self.kit.continuous_servo[self.pin].throttle = 0
+            time.sleep(2.5)
+            print("Calibration for %s complete!" % self.output)
+            self.arm()
+
+    def arm(self):
+        if self.output_type == OutputType.CONTINUOUS_MOTOR:
+            print("Arming ESC for %s now..." % self.output)
+            self.kit.continuous_servo[self.pin].throttle = 0
+            time.sleep(1)
+            self.kit.continuous_servo[self.pin].throttle = 1
+            time.sleep(1)
+            self.kit.continuous_servo[self.pin].throttle = 0
+            time.sleep(1)
+            print("ESC for %s armed!" % self.output)
+        return
+
 
 class MotorController(object):
     def __init__(self, config):
         self.output_mappings = {}
         self.config = config
+        self.kit = ServoKit(channels=16)
 
     def start(self):
         for output in [e.value for e in Output]:
@@ -35,6 +62,13 @@ class MotorController(object):
                 output,
                 OutputType[config.get('OutputType')]
             )
+
+            # Assign any extra variables.
+            mapping.kit = self.kit
+
+            # Setup the servo.
+            mapping.calibrate()
+            mapping.arm()
 
             self.output_mappings.append(mapping)
         return
@@ -50,7 +84,6 @@ class MotorController(object):
         return
 
     def calibrate(self, output):
-        return
 
     def arm(self, output):
         return

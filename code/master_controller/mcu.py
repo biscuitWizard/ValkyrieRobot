@@ -30,7 +30,6 @@ class MotorMapping:
             self.kit.continuous_servo[self.pin].throttle = 0
             time.sleep(2.5)
             print("Calibration for %s complete!" % self.output)
-            self.arm()
 
     def arm(self):
         if self.output_type == OutputType.CONTINUOUS_MOTOR:
@@ -51,7 +50,8 @@ class MotorController(object):
         self.kit = ServoKit(channels=16)
 
     def start(self):
-        for output in [e.value for e in Output]:
+        for output in [e.name for e in Output]:
+
             config = self.config[str(output)]
             # Guard statement. Ignore invalid inputs.
             if config is None or config.get('OutputType') is None:
@@ -69,7 +69,7 @@ class MotorController(object):
             mapping.calibrate()
             mapping.arm()
 
-            self.output_mappings.append(mapping)
+            self.output_mappings[output] = mapping
         return
 
     def loop(self):

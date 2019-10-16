@@ -17,7 +17,7 @@ def main():
     # Initialize our modules.
     print("Loading Modules...")
     radio = RadioReader()
-    mc = MotorController()
+    mc = MotorController(config)
     controller = Controller(config["DEFAULT"], radio, mc)
 
     # Apply configuration to relevant modules.

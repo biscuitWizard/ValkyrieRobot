@@ -1,44 +1,56 @@
-import serial
+from enums import Output, OutputType
 
 
-class RadioReader(object):
-    def __init__(self):
-        self.ser = None
-        self.channels = {}
-        self.timeout = 1
+class MotorMapping:
+    def __init__(self, pin, output, output_type):
+        self.output = output
+        self.output_type = output_type
+        self.value = 0
+        self.pin = pin
+
+    def set_motor_value(self, value):
+        if self.output_type == OutputType.CONTINUOUS_MOTOR:
+            return
+        elif self.output_type == OutputType.SERVO_MOTOR:
+            return
+        elif self.output_type == OutputType.SWITCH:
+            return
+        else:
+            print("Incorrect output type selected for motor")
+
+
+class MotorController(object):
+    def __init__(self, config):
+        self.output_mappings = {}
+        self.config = config
 
     def start(self):
-        self.ser = serial.Serial('/dev/ttyACM0', 19200)
-        self.ser.timeout = self.timeout
+        for output in [e.value for e in Output]:
+            config = self.config[str(output)]
+            # Guard statement. Ignore invalid inputs.
+            if config is None or config.get('OutputType') is None:
+                continue
+            mapping = MotorMapping(
+                config.getint('Pin'),
+                output,
+                OutputType[config.get('OutputType')]
+            )
+
+            self.output_mappings.append(mapping)
+        return
 
     def loop(self):
-        data = self.ser.readline()
+        return
 
-        # Ignore serial lines starting with //
-        if len(data) >= 2 \
-                and data[0] == 0x2F \
-                and data[1] == 0x2F:
-            return
+    def set_motor_value(self, output, value):
+        return
 
-        channel = 1
-        in_channel = False
-        i = 0
-        while i < len(data):
-            if data[i] == 255:
-                # We are done reading this serial. 0xFF is the manual bail code.
-                break
+    #  Stops defined output, or if none defined -- all of them
+    def stop(self, output):
+        return
 
-            if in_channel:
-                # Unpack the value of channel into a number we can use.
-                channel_value = data[i]
+    def calibrate(self, output):
+        return
 
-                # Assign the value of the channel.
-                self.channels[channel] = channel_value
-
-                in_channel = False
-            else:
-                # Set the channel based on the first read of the bit.
-                channel = data[i]
-                in_channel = True
-            i += 1
-
+    def arm(self, output):
+        return

@@ -1,6 +1,8 @@
 import time
 import configparser
-import mcu
+from radio import RadioReader
+from controller import Controller
+from mcu import MotorController
 
 
 def main():
@@ -14,7 +16,9 @@ def main():
 
     # Initialize our modules.
     print("Loading Modules...")
-    radio = mcu.RadioReader()
+    radio = RadioReader()
+    mc = MotorController()
+    controller = Controller(config["DEFAULT"], radio, mc)
 
     # Apply configuration to relevant modules.
     framerateMs = (1 / config["DEFAULT"].getint("Framerate", 30)) * 1000
@@ -26,6 +30,7 @@ def main():
     print("Radio Channel Timeout: " + str(radioTimeout) + "ms.")
     # Start the modules.
     radio.start()
+    controller.start()
 
     print("Master Controller successfully started.")
     # Engage the main program loop.
@@ -35,6 +40,7 @@ def main():
 
         # Loop through all modules.
         radio.loop()
+        controller.loop()
 
         # Log ending time.
         durationMs = (time.time() - start) * 1000

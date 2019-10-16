@@ -81,8 +81,3 @@ class MotorController(object):
     #  Stops defined output, or if none defined -- all of them
     def stop(self, output):
         return
-
-    def calibrate(self, output):
-
-    def arm(self, output):
-        return

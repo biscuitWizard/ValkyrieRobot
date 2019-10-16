@@ -42,7 +42,6 @@ class MotorMapping:
             self.kit.continuous_servo[self.pin].throttle = 0
             time.sleep(1)
             print("ESC for %s armed!" % self.output)
-        return
 
 
 class MotorController(object):

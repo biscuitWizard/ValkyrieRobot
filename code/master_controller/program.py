@@ -30,7 +30,9 @@ def main():
     print("Radio Channel Timeout: " + str(radioTimeout) + "ms.")
     # Start the modules.
     radio.start()
+    mc.start()
     controller.start()
+
 
     print("Master Controller successfully started.")
     # Engage the main program loop.
@@ -41,6 +43,7 @@ def main():
         # Loop through all modules.
         radio.loop()
         controller.loop()
+        mc.loop()
 
         # Log ending time.
         durationMs = (time.time() - start) * 1000

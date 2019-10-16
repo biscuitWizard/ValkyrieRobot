@@ -12,8 +12,10 @@ class Controller(object):
 
     def get_channel_value(self, channel):
         channel_number = self.channel_assignments[channel]
-        return self.radio.channels[channel_number]
-
+        if channel_number in self.radio.channels.keys():
+            return self.radio.channels[channel_number]
+        return 0
+    
     def start(self):
         # Parse all the channel assignments in config to assign numbers to channels
         # to give the radio context.

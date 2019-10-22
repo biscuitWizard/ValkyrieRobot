@@ -20,7 +20,7 @@ def main():
 
     # Initialize our modules.
     print("Loading Modules...")
-    radio = RadioReader('/dev/ttyACM0')
+    radio = RadioReader(config["DEFAULT"].get("RadioSubprocessor"))
     mc = MotorController(config)
     controller = Controller(config, radio, mc)
 

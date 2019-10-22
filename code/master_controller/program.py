@@ -4,8 +4,12 @@ from radio import RadioReader
 from controller import Controller
 from mcu import MotorController
 
+from os import system
+
 
 def main():
+    system('clear')
+
     print("Starting Master Controller...")
 
     # Boot up first by loading the configuration file.
@@ -16,7 +20,7 @@ def main():
 
     # Initialize our modules.
     print("Loading Modules...")
-    radio = RadioReader()
+    radio = RadioReader('/dev/ttyACM0')
     mc = MotorController(config)
     controller = Controller(config, radio, mc)
 
@@ -33,6 +37,7 @@ def main():
     mc.start()
     controller.start()
 
+    last_debug_update = 0
 
     print("Master Controller successfully started.")
     # Engage the main program loop.
@@ -44,6 +49,18 @@ def main():
         radio.loop()
         controller.loop()
         mc.loop()
+
+        # Update if necessary.
+        if time.time() - last_debug_update > 2:
+            system('clear')
+
+            # Write out our channel values.
+            print("[Radio Channel Values]")
+            for channel in radio.channels.keys():
+                print("\tChannel " + str(channel) + ": " + radio.channels[channel])
+
+            # Update the time since we've last updated.
+            last_debug_update = time.time()
 
         # Log ending time.
         durationMs = (time.time() - start) * 1000

@@ -1,4 +1,5 @@
 import serial
+import struct
 
 
 class RadioReader(object):
@@ -28,11 +29,20 @@ class RadioReader(object):
             if data[i] == 255:
                 # We are done reading this serial. 0xFF is the manual bail code.
                 break
+            if data[i] == 0xA0:
+                # 0xA0 is a delimiter for data, and we should terminate whatever
+                # we're reading.
+                in_channel = False
+                channel = -1
+                i += 1
+                continue
 
             if in_channel:
                 # Unpack the value of channel into a number we can use.
-                channel_value = data[i]
+                byte_array = bytearray([data[i], data[i + 1]])
 
+                channel_value = struct.unpack('hh', byte_array)
+                
                 # Assign the value of the channel.
                 self.channels[channel] = channel_value
 

@@ -57,7 +57,7 @@ def main():
             # Write out our channel values.
             print("[Radio Channel Values]")
             for channel in radio.channels.keys():
-                print("\tChannel " + str(channel) + ": " + radio.channels[channel])
+                print("\tChannel " + str(channel) + ": " + str(radio.channels[channel]))
 
             # Update the time since we've last updated.
             last_debug_update = time.time()

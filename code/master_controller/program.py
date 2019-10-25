@@ -64,7 +64,7 @@ def main():
             print("[Motor Outputs]")
             for output in mc.output_mappings.keys():
                 mapping = mc.output_mappings[output]
-                print("\t" + str(output) + ": " + mapping.value)
+                print("\t" + str(output) + ": " + str(mapping.value))
 
             # Update the time since we've last updated.
             last_debug_update = time.time()

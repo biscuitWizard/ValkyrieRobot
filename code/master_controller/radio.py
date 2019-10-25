@@ -41,8 +41,8 @@ class RadioReader(object):
                 # Unpack the value of channel into a number we can use.
                 byte_array = bytearray([data[i], data[i + 1]])
 
-                channel_value = struct.unpack('hh', byte_array)
-                
+                channel_value = struct.unpack('h', byte_array)
+
                 # Assign the value of the channel.
                 self.channels[channel] = channel_value
 

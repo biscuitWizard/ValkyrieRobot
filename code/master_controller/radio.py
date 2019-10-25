@@ -14,6 +14,11 @@ class RadioReader(object):
         self.ser.timeout = self.timeout
 
     def loop(self):
+        # We don't need stale data.
+        self.ser.reset_input_buffer()
+        self.ser.reset_output_buffer()
+
+        # Get fresh data.
         raw_data = self.ser.readline()
 
         if len(raw_data) < 4:

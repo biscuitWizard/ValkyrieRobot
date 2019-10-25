@@ -79,6 +79,7 @@ class MotorController(object):
         return
 
     def set_motor_value(self, output, value):
+        return # Hack
         mapping = next((x for x in self.output_mappings if x.output == output), None)
         if mapping is None:
             return

@@ -10,7 +10,7 @@ class RadioReader(object):
         self.last_input = None
 
     def start(self):
-        self.ser = serial.Serial(self.serial_device, 19200)
+        self.ser = serial.Serial(self.serial_device, 115200)
         self.ser.timeout = self.timeout
 
     def loop(self):

@@ -1,4 +1,5 @@
 import time
+from colorama import Fore, Style
 import configparser
 from radio import RadioReader
 from controller import Controller
@@ -50,7 +51,9 @@ def main():
             radio.loop()
             controller.loop()
             mc.loop()
-        except:
+        except Exception as err:
+            print(Fore.RED + str(err))
+            input("Press Enter to continue...")
             continue
 
         # Update if necessary.

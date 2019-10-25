@@ -10,6 +10,10 @@ class Controller(object):
         self.mcu = mcu
         self.channel_assignments = {}
 
+        self.throttle_modifier = 0
+        self.lateral_throttle = 0;
+        self.yaw_throttle = 0;
+
     def get_channel_value(self, channel):
         channel_number = self.channel_assignments[channel]
         if channel_number in self.radio.channels.keys():
@@ -27,13 +31,13 @@ class Controller(object):
 
     def loop(self):
         # Calculate what duty load to give the chassis ESCs.
-        throttle_modifier = self.get_channel_value(Channel.THROTTLE_MIX) / 100  # 0 - 1 range
-        lateral_throttle = self.get_channel_value(Channel.CHASSIS_LATERAL)      # -100 to 100 range
-        yaw_throttle = self.get_channel_value(Channel.CHASSIS_YAW)              # -100 to 100 range
+        self.throttle_modifier = self.get_channel_value(Channel.THROTTLE_MIX) / 100  # 0 - 1 range
+        self.lateral_throttle = self.get_channel_value(Channel.CHASSIS_LATERAL)      # -100 to 100 range
+        self.yaw_throttle = self.get_channel_value(Channel.CHASSIS_YAW)              # -100 to 100 range
 
-        thrust = steering(lateral_throttle, yaw_throttle)
-        self.mcu.set_motor_value(Output.DRIVE_LEFT, thrust[0] * throttle_modifier)
-        self.mcu.set_motor_value(Output.DRIVE_RIGHT, thrust[1] * throttle_modifier)
+        thrust = steering(self.lateral_throttle, self.yaw_throttle)
+        self.mcu.set_motor_value(Output.DRIVE_LEFT, thrust[0] * self.throttle_modifier)
+        self.mcu.set_motor_value(Output.DRIVE_RIGHT, thrust[1] * self.throttle_modifier)
 
 
 def steering(x, y):

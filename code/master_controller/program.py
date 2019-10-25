@@ -56,15 +56,20 @@ def main():
             system('clear')
 
             # Write out our channel values.
-            print("[Radio Channel Values]")
+            print("\r\n[Radio Channel Values]")
             print("\tRAW: " + str(radio.last_input))
             for channel in radio.channels.keys():
                 print("\tChannel " + str(channel) + ": " + str(radio.channels[channel]))
 
-            print("[Motor Outputs]")
+            print("\r\n[Motor Outputs]")
             for output in mc.output_mappings.keys():
                 mapping = mc.output_mappings[output]
                 print("\t" + str(output) + ": " + str(mapping.value))
+
+            print("\r\n[Controller Status]")
+            print("\tThrottle Modifier: " + str(controller.throttle_modifier))
+            print("\tLateral Throttle: " + str(controller.lateral_throttle))
+            print("\tYaw Throttle: " + str(controller.yaw_throttle))
 
             # Update the time since we've last updated.
             last_debug_update = time.time()

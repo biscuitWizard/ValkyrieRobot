@@ -36,16 +36,20 @@ void loop() {
   for(int i=0;i < max_channels;i++) {
     cur_chan = &channels[i];
     cur_chan->duration = pulseIn(cur_chan->pin, HIGH);
-    cur_chan->value = constrain((cur_chan->duration - 970.0) / 1000.0 * 200 - 100, -100, 100);
+    if(cur_chan->duration != 0) {
+      cur_chan->value = constrain((cur_chan->duration - 970.0) / 1000.0 * 200 - 100, -100, 100);
+    } else {
+      cur_chan->value = 0;
+    }
   }
 
   // Main loop for reporting pulse results.
   for(int i=0;i < max_channels;i++) {
     cur_chan = &channels[i];
-    Serial.write(cur_chan->channel_id);
-    Serial.write(cur_chan->value);
-    Serial.write(0xA0);
+    Serial.print(cur_chan->channel_id);
+    Serial.print(":");
+    Serial.print(cur_chan->value);
+    Serial.print("|");
   }
-  Serial.write(0xFF);
   Serial.println();
 }

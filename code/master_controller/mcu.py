@@ -79,11 +79,9 @@ class MotorController(object):
         return
 
     def set_motor_value(self, output, value):
-        return # Hack
-        mapping = next((x for x in self.output_mappings if x.output == output), None)
+        mapping = self.output_mappings[output]
         if mapping is None:
             return
-
         mapping.set_motor_value(value)
 
     #  Stops defined output, or if none defined -- all of them

@@ -17,7 +17,7 @@ class RadioReader(object):
         # We don't need stale data.
         self.ser.reset_input_buffer()
         self.ser.reset_output_buffer()
-        self.ser.readline(); # Clear out the last line, as it was probably wiped mid-line.
+        self.ser.readline() # Clear out the last line, as it was probably wiped mid-line.
 
         # Get fresh data.
         raw_data = self.ser.readline()

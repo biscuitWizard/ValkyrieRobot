@@ -19,7 +19,8 @@ class RadioReader(object):
         if len(raw_data) < 4:
             return
 
-        data = raw_data.decode("utf-8")
+        data = raw_data.decode("ascii")
+
         self.last_input = data
 
         raw_channels = data.split('|')

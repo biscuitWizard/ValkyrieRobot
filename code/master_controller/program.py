@@ -46,9 +46,12 @@ def main():
         start = time.time()
 
         # Loop through all modules.
-        radio.loop()
-        controller.loop()
-        mc.loop()
+        try:
+            radio.loop()
+            controller.loop()
+            mc.loop()
+        except:
+            continue
 
         # Update if necessary.
         if time.time() - last_debug_update > 2:

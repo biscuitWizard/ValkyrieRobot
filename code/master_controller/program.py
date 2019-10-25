@@ -66,8 +66,6 @@ def main():
         durationMs = (time.time() - start) * 1000
 
         # Sleep.
-        if durationMs >= framerateMs:
-            print("System running late. Allocated " + str(framerateMs) + "ms, took " + str(durationMs) + "ms.")
         time.sleep(max(0, (framerateMs - durationMs) / 1000))
 
 

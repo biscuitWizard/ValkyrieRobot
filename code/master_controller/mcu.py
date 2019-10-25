@@ -2,6 +2,7 @@ from enums import Output, OutputType
 from adafruit_servokit import ServoKit
 import time
 
+
 class MotorMapping:
     def __init__(self, pin, output, output_type):
         self.output = output
@@ -11,10 +12,13 @@ class MotorMapping:
 
     def set_motor_value(self, value):
         if self.output_type == OutputType.CONTINUOUS_MOTOR:
+            self.value = value;
             return
         elif self.output_type == OutputType.SERVO_MOTOR:
+            self.value = value;
             return
         elif self.output_type == OutputType.SWITCH:
+            self.value = value;
             return
         else:
             print("Incorrect output type selected for motor")
@@ -76,7 +80,11 @@ class MotorController(object):
         return
 
     def set_motor_value(self, output, value):
-        return
+        mapping = next((x for x in self.output_mappings if x.output == output), None)
+        if mapping is None:
+            return
+
+        mapping.set_motor_value(value)
 
     #  Stops defined output, or if none defined -- all of them
     def stop(self, output):

@@ -66,6 +66,10 @@ def main():
             for channel in radio.channels.keys():
                 print("\tChannel " + str(channel) + ": " + str(radio.channels[channel]))
 
+            print("[Motor Outputs]")
+            for mapping in mc.output_mappings:
+                print("\t" + str(mapping.output) + ": " + mapping.value)
+
             # Update the time since we've last updated.
             last_debug_update = time.time()
 

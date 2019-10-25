@@ -47,14 +47,9 @@ def main():
         start = time.time()
 
         # Loop through all modules.
-        try:
-            radio.loop()
-            controller.loop()
-            mc.loop()
-        except Exception as err:
-            print(Fore.RED + str(err))
-            input("Press Enter to continue...")
-            continue
+        radio.loop()
+        controller.loop()
+        mc.loop()
 
         # Update if necessary.
         if time.time() - last_debug_update > 2:

@@ -55,7 +55,6 @@ class MotorController(object):
 
     def start(self):
         for output in [e.name for e in Output]:
-
             config = self.config[str(output)]
             # Guard statement. Ignore invalid inputs.
             if config is None or config.get('OutputType') is None:

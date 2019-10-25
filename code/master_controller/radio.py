@@ -13,10 +13,12 @@ class RadioReader(object):
         self.ser.timeout = self.timeout
 
     def loop(self):
-        data = self.ser.readline()
+        raw_data = self.ser.readline()
 
-        if len(data) < 4:
+        if len(raw_data) < 4:
             return
+
+        data = raw_data.decode("utf-8")
 
         raw_channels = data.split('|')
         for raw_channel in raw_channels:

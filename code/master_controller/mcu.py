@@ -55,10 +55,13 @@ class MotorController(object):
 
     def start(self):
         for output in [e.name for e in Output]:
+            print("Setting up " + str(output) + "...");
             config = self.config[str(output)]
             # Guard statement. Ignore invalid inputs.
             if config is None or config.get('OutputType') is None:
+                print("Unable to find config or OutputType. Skipping.")
                 continue
+
             mapping = MotorMapping(
                 config.getint('Pin'),
                 output,
@@ -73,6 +76,7 @@ class MotorController(object):
             mapping.arm()
 
             self.output_mappings[output] = mapping
+            print(str(output) + " setup complete!")
         return
 
     def loop(self):

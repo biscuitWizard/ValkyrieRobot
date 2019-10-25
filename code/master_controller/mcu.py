@@ -83,7 +83,7 @@ class MotorController(object):
         return
 
     def set_motor_value(self, output, value):
-        mapping = self.output_mappings[output]
+        mapping = self.output_mappings[output.name]
         if mapping is None:
             return
         mapping.set_motor_value(value)

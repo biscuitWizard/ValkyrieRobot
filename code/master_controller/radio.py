@@ -7,6 +7,7 @@ class RadioReader(object):
         self.channels = {}
         self.timeout = 1
         self.serial_device = serial_device
+        self.last_input = None
 
     def start(self):
         self.ser = serial.Serial(self.serial_device, 19200)
@@ -19,6 +20,7 @@ class RadioReader(object):
             return
 
         data = raw_data.decode("utf-8")
+        self.last_input = data
 
         raw_channels = data.split('|')
         for raw_channel in raw_channels:
@@ -31,8 +33,11 @@ class RadioReader(object):
                 # There was an error parsing. Skip this channel.
                 continue
 
-            channel = tokens[0]
-            value = tokens[1]
+            try:
+                channel = int(tokens[0])
+                value = int(tokens[1])
 
-            self.channels[channel] = value
+                self.channels[channel] = value
+            except:
+                continue
 

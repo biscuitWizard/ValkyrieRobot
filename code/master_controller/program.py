@@ -56,6 +56,7 @@ def main():
 
             # Write out our channel values.
             print("[Radio Channel Values]")
+            print("\tRAW: " + str(radio.last_input))
             for channel in radio.channels.keys():
                 print("\tChannel " + str(channel) + ": " + str(radio.channels[channel]))
 

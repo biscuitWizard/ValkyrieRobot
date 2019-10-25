@@ -38,8 +38,6 @@ def main():
     mc.start()
     controller.start()
 
-    last_debug_update = 0
-
     print("Master Controller successfully started.")
     # Engage the main program loop.
     while True:
@@ -57,18 +55,14 @@ def main():
             continue
 
         # Update if necessary.
-        if time.time() - last_debug_update > 2:
-            system('clear')
+        system('clear')
 
-            # Write out our channel values.
-            print("[Radio Channel Values]")
-            print("\tRAW: " + str(radio.last_input))
-            for channel in radio.channels.keys():
-                print("\tChannel " + str(channel) + ": " + str(radio.channels[channel]))
-
-            # Update the time since we've last updated.
-            last_debug_update = time.time()
-
+        # Write out our channel values.
+        print("[Radio Channel Values]")
+        print("\tRAW: " + str(radio.last_input))
+        for channel in radio.channels.keys():
+            print("\tChannel " + str(channel) + ": " + str(radio.channels[channel]))
+            
         # Log ending time.
         durationMs = (time.time() - start) * 1000
 

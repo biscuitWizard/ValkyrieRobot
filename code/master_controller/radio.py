@@ -19,26 +19,28 @@ class RadioReader(object):
         if len(raw_data) < 4:
             return
 
-        data = raw_data.decode("ascii")
+        try:
+            data = raw_data.decode("ascii")
 
-        self.last_input = data
+            self.last_input = data
 
-        raw_channels = data.split('|')
-        for raw_channel in raw_channels:
-            if len(raw_channel) < 3:
-                # Possible for there to be empty channels. Ignore them.
-                continue
+            raw_channels = data.split('|')
+            for raw_channel in raw_channels:
+                if len(raw_channel) < 3:
+                    # Possible for there to be empty channels. Ignore them.
+                    continue
 
-            tokens = raw_channel.split(':')
-            if len(tokens) < 2:
-                # There was an error parsing. Skip this channel.
-                continue
+                tokens = raw_channel.split(':')
+                if len(tokens) < 2:
+                    # There was an error parsing. Skip this channel.
+                    continue
 
-            try:
-                channel = int(tokens[0])
-                value = int(tokens[1])
+                try:
+                    channel = int(tokens[0])
+                    value = int(tokens[1])
 
-                self.channels[channel] = value
-            except:
-                continue
-
+                    self.channels[channel] = value
+                except:
+                    continue
+        except UnicodeDecodeError as err:
+            return

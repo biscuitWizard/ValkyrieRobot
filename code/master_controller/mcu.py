@@ -12,13 +12,14 @@ class MotorMapping:
 
     def set_motor_value(self, value):
         if self.output_type == OutputType.CONTINUOUS_MOTOR:
-            self.value = value;
+            self.value = value
+            self.kit.continuous_servo[self.pin].throttle = min(1.0, max(-1.0, value))
             return
         elif self.output_type == OutputType.SERVO_MOTOR:
-            self.value = value;
+            self.value = value
             return
         elif self.output_type == OutputType.SWITCH:
-            self.value = value;
+            self.value = value
             return
         else:
             print("Incorrect output type selected for motor")
